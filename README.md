@@ -130,7 +130,7 @@ Editar
 Eliminar
 
 Ver detalles
-
+---------------------//----------------//-------------//--------------//
 🔐 Agregar autenticación con Identity a "ZapatosAlmacenApp"
 ✅ Requisitos previos
 Antes de comenzar, asegúrate de:
