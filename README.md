@@ -1,5 +1,7 @@
 # ZapatosAlmacenApp
 
+![image](https://github.com/user-attachments/assets/b452a704-1ae8-402e-b6d7-54660efd7254)
+
 # Guía para desarrollar una aplicación MVC en Visual Studio 2022 conectada a SQL Server para gestionar un almacén de zapatos (CRUD)
 
 ## 🛠️ Tecnologías utilizadas:
