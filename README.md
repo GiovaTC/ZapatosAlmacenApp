@@ -146,8 +146,7 @@ a. Modificar ApplicationDbContext para incluir IdentityDbContext
 Reemplaza tu contexto actual por:
 
 csharp
-Copiar
-Editar
+
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -162,16 +161,14 @@ b. Instalar el paquete de Identity si no está incluido
 En la Consola del Administrador de Paquetes:
 
 powershell
-Copiar
-Editar
+
 Install-Package Microsoft.AspNetCore.Identity.EntityFrameworkCore
 Install-Package Microsoft.AspNetCore.Identity.UI
 c. Configurar servicios en Program.cs
 Agrega las líneas necesarias para Identity:
 
 csharp
-Copiar
-Editar
+
 using Microsoft.AspNetCore.Identity;
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -185,21 +182,18 @@ d. Agregar los archivos de interfaz de usuario (UI) de Identity
 En la terminal:
 
 bash
-Copiar
-Editar
+
 dotnet aspnet-codegenerator identity -dc ApplicationDbContext
 Este comando genera las vistas y páginas de registro/login en tu proyecto.
 
 Si no tienes instalado el generador de código:
 
 bash
-Copiar
-Editar
+
 dotnet tool install --global dotnet-aspnet-codegenerator
 dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
 e. Aplicar la migración de Identity
 powershell
-Copiar
-Editar
+
 Add-Migration AddIdentityTables
 Update-Database
