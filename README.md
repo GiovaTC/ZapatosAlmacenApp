@@ -197,3 +197,66 @@ powershell
 
 Add-Migration AddIdentityTables
 Update-Database
+10. Proteger el CRUD con autenticación
+a. Restringir el acceso a ZapatosController
+Agrega el atributo [Authorize]:
+
+csharp
+
+using Microsoft.AspNetCore.Authorization;
+
+[Authorize]
+public class ZapatosController : Controller
+{
+    // ...
+}
+b. Permitir el acceso anónimo a HomeController (si existe)
+csharp
+
+using Microsoft.AspNetCore.Authorization;
+
+[AllowAnonymous]
+public class HomeController : Controller
+{
+    public IActionResult Index() => View();
+}
+11. Agregar soporte de login y logout en _Layout.cshtml
+En Views/Shared/_Layout.cshtml, reemplaza el bloque de autenticación con:
+
+razor
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index">Hola, @UserManager.GetUserName(User)!</a>
+        </li>
+        <li class="nav-item">
+            <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" method="post">
+                <button type="submit" class="nav-link btn btn-link text-dark">Cerrar sesión</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Iniciar sesión</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Registrarse</a>
+        </li>
+    }
+</ul>
+12. Ejecutar y probar
+Ejecuta la aplicación (Ctrl + F5).
+
+Verás el formulario de login si accedes a /Zapatos.
+
+Regístrate y accede para realizar las operaciones CRUD.
+
+Asegúrate de que solo los usuarios autenticados accedan a las funciones protegidas.
+
