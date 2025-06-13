@@ -1,5 +1,7 @@
 # ZapatosAlmacenApp
 
+![image](https://github.com/user-attachments/assets/3efba7f7-e197-4000-8de5-0d5ed9c30cf5)
+
 ![image](https://github.com/user-attachments/assets/7525337f-9e24-43d9-be8d-0f3ca5cde041)
 
 ![image](https://github.com/user-attachments/assets/a5e4294d-2805-455c-a617-bf4eb2d6cda6)
