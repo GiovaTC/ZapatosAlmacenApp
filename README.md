@@ -1,5 +1,9 @@
 # ZapatosAlmacenApp
 
+![image](https://github.com/user-attachments/assets/a5e4294d-2805-455c-a617-bf4eb2d6cda6)
+
+![image](https://github.com/user-attachments/assets/dc8171f5-ff3a-4cdc-95b7-31c35aec0864)
+
 ![image](https://github.com/user-attachments/assets/b77a8a48-2bdd-49d9-a1f1-0f02beaf20e9)
 
 ![image](https://github.com/user-attachments/assets/1f2a2b9f-4925-4d31-ab0d-e2c37d6edb5a)
@@ -197,3 +201,69 @@ powershell
 
 Add-Migration AddIdentityTables
 Update-Database
+
+---------------------//-------------------//-------------------//------------//
+
+10. Proteger el CRUD con autenticación
+a. Restringir el acceso a ZapatosController
+Agrega el atributo [Authorize]:
+
+csharp
+
+using Microsoft.AspNetCore.Authorization;
+
+[Authorize]
+public class ZapatosController : Controller
+{
+    // ...
+}
+b. Permitir el acceso anónimo a HomeController (si existe)
+csharp
+
+using Microsoft.AspNetCore.Authorization;
+
+[AllowAnonymous]
+public class HomeController : Controller
+{
+    public IActionResult Index() => View();
+}
+11. Agregar soporte de login y logout en _Layout.cshtml
+En Views/Shared/_Layout.cshtml, reemplaza el bloque de autenticación con:
+
+razor
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index">Hola, @UserManager.GetUserName(User)!</a>
+        </li>
+        <li class="nav-item">
+            <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" method="post">
+                <button type="submit" class="nav-link btn btn-link text-dark">Cerrar sesión</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Iniciar sesión</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Registrarse</a>
+        </li>
+    }
+</ul>
+12. Ejecutar y probar
+Ejecuta la aplicación (Ctrl + F5).
+
+Verás el formulario de login si accedes a /Zapatos.
+
+Regístrate y accede para realizar las operaciones CRUD.
+
+Asegúrate de que solo los usuarios autenticados accedan a las funciones protegidas.
+
