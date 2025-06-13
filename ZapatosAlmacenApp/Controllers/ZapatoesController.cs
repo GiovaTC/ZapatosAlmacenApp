@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ZapatosAlmacenApp.Data;
 using ZapatosAlmacenApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ZapatosAlmacenApp.Controllers
 {
+    [Authorize]
     public class ZapatoesController : Controller
     {
         private readonly ApplicationDbContext _context;
