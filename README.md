@@ -197,6 +197,9 @@ powershell
 
 Add-Migration AddIdentityTables
 Update-Database
+
+---------------------//-------------------//-------------------//------------//
+
 10. Proteger el CRUD con autenticación
 a. Restringir el acceso a ZapatosController
 Agrega el atributo [Authorize]:
