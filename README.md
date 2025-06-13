@@ -130,98 +130,70 @@ Editar
 Eliminar
 
 Ver detalles
+---------------------//----------------//-------------//--------------//
+🔐 Agregar autenticación con Identity a "ZapatosAlmacenApp"
+✅ Requisitos previos
+Antes de comenzar, asegúrate de:
 
-🔐 Agregar autenticación con Identity en ASP.NET MVC
-✅ 1. Crear un nuevo proyecto con autenticación
-En Visual Studio 2022:
+Haber creado el proyecto MVC como se indica.
 
-Crea un nuevo proyecto ASP.NET Core Web App (Model-View-Controller)
+Haber configurado la conexión con SQL Server.
 
-Marca Authentication Type: Individual Accounts
+Haber creado el modelo y el contexto ApplicationDbContext.
 
-Nombre del proyecto: ZapatosAlmacenApp
+9. Integrar ASP.NET Core Identity
+a. Modificar ApplicationDbContext para incluir IdentityDbContext
+Reemplaza tu contexto actual por:
 
-Esto incluirá automáticamente:
+csharp
 
-Controladores para autenticación (AccountController, Register, Login, etc.)
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
-Vistas relacionadas (Views/Account/)
+public class ApplicationDbContext : IdentityDbContext
+{
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options) { }
 
-Tablas de usuario y roles en la base de datos
-
-✅ 2. Configura la cadena de conexión
-En appsettings.json:
-
-json
-
-"ConnectionStrings": {
-  "ZapatosDb": "Server=TU_SERVIDOR_SQL;Database=ZapatosAlmacen;Trusted_Connection=True;"
+    public DbSet<Zapato> Zapatos { get; set; }
 }
-✅ 3. Migraciones de Identity y Base de Datos
+b. Instalar el paquete de Identity si no está incluido
 En la Consola del Administrador de Paquetes:
 
 powershell
 
-Add-Migration IdentityInit
-Update-Database
-Esto crea las tablas necesarias (AspNetUsers, AspNetRoles, etc.)
-
-✅ 4. Restringir el acceso a las vistas del CRUD
-En ZapatosController.cs, agrega el atributo [Authorize]:
+Install-Package Microsoft.AspNetCore.Identity.EntityFrameworkCore
+Install-Package Microsoft.AspNetCore.Identity.UI
+c. Configurar servicios en Program.cs
+Agrega las líneas necesarias para Identity:
 
 csharp
 
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
-[Authorize]
-public class ZapatosController : Controller
-{
-    // Acciones CRUD aquí
-}
-Esto asegura que solo usuarios autenticados puedan acceder a las acciones CRUD.
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ZapatosDb")));
 
-✅ 5. Agregar inicio de sesión en el menú
-Edita _Layout.cshtml (en Views/Shared/):
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-html
+builder.Services.AddControllersWithViews();
+d. Agregar los archivos de interfaz de usuario (UI) de Identity
+En la terminal:
 
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+bash
 
-<ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Cerrar sesión</a>
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Iniciar sesión</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Registrarse</a>
-        </li>
-    }
-</ul>
+dotnet aspnet-codegenerator identity -dc ApplicationDbContext
+Este comando genera las vistas y páginas de registro/login en tu proyecto.
 
-✅ 6. Probar la aplicación
-Ejecuta la app
+Si no tienes instalado el generador de código:
 
-Regístrate con un nuevo usuario
+bash
 
-Inicia sesión
+dotnet tool install --global dotnet-aspnet-codegenerator
+dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
+e. Aplicar la migración de Identity
+powershell
 
-Navega a /Zapatos, ahora accesible solo para usuarios autenticados
-
-🚀 Extensiones opcionales
-Autorización por roles (Ej. "Administrador", "Empleado")
-
-Registro con confirmación de email
-
-Restablecimiento de contraseña
-
-Subida de imágenes para zapatos
-
+Add-Migration AddIdentityTables
+Update-Database
